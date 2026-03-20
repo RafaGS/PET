@@ -1,40 +1,27 @@
 #pragma once
 
-// Screen
-#define BG_COLOUR	BLACK
-#define FG_COLOUR	GREEN
+// Pantalla
+#define BG_COLOUR       BLACK
+#define FG_COLOUR       GREEN
 #define CHARS_PER_LINE  40
-#define SCREEN_LINES	25
-#define SCREEN_RAM_SIZE	0x0400
+#define SCREEN_LINES    25
+#define SCREEN_RAM_SIZE 0x0400
 
-#if defined(USE_VGA) || defined(USE_DVI)
-#define ORIENT	portrait
-#elif defined(USE_ESPI)
-#define ORIENT	reverse_landscape
-#endif
+// portrait = rotation 0, Adafruit_GFX ve 400x300 — correcto para MODE400x300
+// landscape = rotation 1, Adafruit_GFX hace swap → 300x400 — incorrecto
+#define ORIENT          portrait
 
-// SPI-RAM
-#if defined(USE_SPIRAM)
-#define SPIRAM_BASE     RAM_SIZE
-#define SPIRAM_EXTENT	(0x8000 - RAM_SIZE)
-#endif
-
-#define RAM_PAGES	(RAM_SIZE / ram<>::page_size)
-
-// where programs and images are stored
-#if defined(USE_SD)
-#define PROGRAMS        "/pet/"
-#else
+// Sin SPIRAM, sin SD
 #define PROGRAMS        "/"
+// RAM máxima: 32 páginas × 1 KB = 32 KB  (ram<> = ram<1024>)
+#define RAM_PAGES_MAX   32
+
+// ROM set: 1 = PET 2001 (BASIC 1, 7×2KB), 2 = PET 2001N (BASIC 2, 4×ROM)
+#if !defined(ROM_SERIES)
+#define ROM_SERIES      1
 #endif
 
-// rom set
-#if !defined(ROM_SET)
-#define ROM_SET	series4
-//#define ROM_SET series2
-#endif
-
-// character set
+// Charset
 #if !defined(CHARSET_ROM)
-#define CHARSET_ROM	"roms/characters2.h"
+#define CHARSET_ROM     "roms/characters2.h"
 #endif

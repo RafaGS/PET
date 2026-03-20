@@ -1,46 +1,28 @@
 t ?= esp32
 
 TERMINAL_SPEED := 115200
-TERMINAL_EXTRA_FLAGS := -C serialout.txt
-LIBRARIES = SimpleTimer PS2KeyRaw Adafruit_GFX Adafruit_BusIO Wire
+# SimpleTimer ya está en inc/ — NO incluir en LIBRARIES
+LIBRARIES = Adafruit_GFX Adafruit_BusIO Wire
 CPPFLAGS = -DSIMPLE_TIMER_MICROS -DDEBUGGING=0x00 -DTERMINAL_SPEED=$(TERMINAL_SPEED)
-
-ifeq ($t, esp8266)
-BOARD := d1_mini
-FS_DIR := data
-baud := 921600
-eesz := 4M1M
-
-CPPFLAGS += -DUSER_SETUP_LOADED -DILI9341_DRIVER -DTFT_CS=PIN_D8 -DTFT_DC=PIN_D1 \
-	-DTFT_RST=-1 -DSPI_FREQUENCY=40000000 -DLOAD_GLCD \
-	-DHARDWARE_H=\"hw/esp8bit.h\"
-LIBRARIES += TFT_eSPI SpiRAM LittleFS
-endif
-
-ifeq ($t, rp2040)
-BOARD := adafruit_feather_dvi
-flash := 8388608_2097152
-CPPFLAGS += -DDVI_BIT_DEPTH=1 -DDVI_RESOLUTION=DVI_RES_640x240p60
-LIBRARIES += LittleFS PicoDVI
-endif
 
 ifeq ($t, esp32)
 UploadSpeed := 921600
-FS_DIR := data
 LIBRARIES += FS SPIFFS
 
-ifeq ($b, lilygo)
+ifeq ($b, vga32)
+BOARD := esp32dev
+SERIAL_PORT := /dev/ttyUSB0
+CPPFLAGS += -DVGA_RESOLUTION=MODE400x300 -DROM_SET=series2
+LIBRARIES += ESP32Lib
+
+else ifeq ($b, lilygo)
 BOARD := ttgo-t7-v14-mini32
 SERIAL_PORT := /dev/ttyACM0
 CPPFLAGS += -DVGA_RESOLUTION=MODE400x300 -DROM_SET=series4
 LIBRARIES += ESP32Lib
 
 else
-BOARD := lolin32
-CPPFLAGS += -DUSER_SETUP_LOADED -DILI9341_DRIVER -DTFT_CS=5 -DTFT_DC=2 \
-	-DTFT_RST=-1 -DSPI_FREQUENCY=40000000 -DLOAD_GLCD \
-	-DHARDWARE_H=\"hw/esp32-example.h\"
-LIBRARIES += TFT_eSPI
+$(error "Define target: make t=esp32 b=vga32")
 endif
 endif
 
