@@ -11,4 +11,4 @@ Para cambiar de sistema:
 
 Basado en el emulador [PET de jscrane](https://github.com/jscrane/PET).
 
-Más información en Minibots: []
+Más información en Minibots: [https://minibots.wordpress.com/2026/03/20/emulador-de-commodore-pet-2001-con-lilygo-ttgo-vga32/]
