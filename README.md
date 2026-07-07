@@ -1,4 +1,4 @@
-# Emulador de PET 2001/2001-N para TTgo VGA32 (ESP32)
+# Emulador de Commodore PET 2001/2001-N para TTgo VGA32 (ESP32)
 
 Emula los Commodore PET 2001 y 2001-N en configuraciones de 4, 8, 16 y 32 KB.
 
